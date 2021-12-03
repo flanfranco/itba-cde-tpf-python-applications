@@ -1,0 +1,11 @@
+stocks_symbols_list = ["GOOG", "MSFT", "AMZN"]
+stocks_api_base_url = 'https://www.alphavantage.co/query'
+stocks_api_function = 'TIME_SERIES_DAILY'
+stocks_api_key = 'D32F472J6TIP3U2'
+stocks_conn_user = 'airflow'
+stocks_conn_pass = 'airflow'
+stocks_conn_host = 'postgres'
+stocks_conn_port = '5432'
+stocks_conn_db = 'airflow'
+stocks_conn_schema = 'itba_stock_ticker'
+stocks_conn_daily_ticker_table = 'stock_ticker_daily'
