@@ -139,6 +139,16 @@ This two variables are used in the SQL create queries presented in the [stocks_e
 
 ## How to deploy & test
 
+The main prerequisite is have installed docker-compose, and then:
+
+1. Clone the repository.
+2. In you're environment execute the setup.sh file.
+3. Wait a few moments, docker-compose is starting the services.
+4. Open http://localhost:8080 and then login with user airflow and pass airflow.
+5. Activate the stocks_etl_dag and see how the backfill process is working.
+6. You can see in the daily_stock_data and daily_stock_report folders the ingested data and the weekly report generated.
+
+That's its! 💪
 
 
 ## Improve ToDo
@@ -151,3 +161,9 @@ This two variables are used in the SQL create queries presented in the [stocks_e
 
 ⚪ Implement Pylint & black with Github Actions
 
+
+
+Thanks for you're time and support!
+
+
+👨🏽‍💻 Flavio Lanfranco - version 20211204
