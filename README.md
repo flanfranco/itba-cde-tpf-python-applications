@@ -86,13 +86,20 @@ Related to the data model, in the same config.py file are another two variables 
 * stocks_conn_schema = 'itba_stock_ticker'
 * stocks_conn_daily_ticker_table = 'stock_ticker_daily'
 
-This two variables are used in the SQL create queries presented inside de `stocks_etl_dag.py` and are executed in the first dag task `create_schema_table_if_not_exists` with the IF NOT EXIST clause.  
+This two variables are used in the SQL create queries presented in the `stocks_etl_dag.py` and are executed in the first dag task `create_schema_table_if_not_exists` with the IF NOT EXIST clause.  
 
 The `PostgresqlClient` (dags/utils/postgresql_cli.py) python class was developed following the `SqLiteClient` of the practical Airflow coursework, in order to connect with the Postgres DB. The main difference of that class is in the db_uri (that use all the postgres necessary params) and the possibility to consider the schema name in the `insert_from_frame` method.
 
 In reference of the dag developed, consists in three main steps:
-img
-1. Getting the data from the stock api. Filter it (by execution day) and using xcom passing it to the another task. One important thing to take in count in this task, is that the response obtained from stock api is stored in raw folder. In prod enviroments is convinient (good practice) work storing (for example in S3 bucket) the raw data, and then, in a stg/process task access it, process and then continues with the pipeline.
+![Image of the Deployment](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/documentation/resources/images/01_stocks_etl_dag.png)
+1. Getting the data from the stock api. Filter it (by execution day) and using xcom passing it to the another task. One important thing to take in count in this task, is that the response obtained from stock api is stored in raw folder. In prod enviroments is convinient (good practice) storing (for example in S3 bucket) the raw data, and then, in a stg/process task access it, process and then continues with the pipeline.
+
+![Image of the Deployment](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/documentation/resources/images/04_raw_data_folder.png)
+
 2. Inserts the filter stock data to postgresql database using PostgresqlClient.
-img
+
 3. Getting the daily ticker data from postgresql database and generate the report using numpy. 
+
+![Image of the Deployment](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/documentation/resources/images/05_reports_folder.png)
+
+
