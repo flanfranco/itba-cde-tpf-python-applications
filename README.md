@@ -69,3 +69,6 @@ If you want to go an extra mile you can do the following:
 * Add the configs for [Pylint](https://pylint.org/) and [black](https://black.readthedocs.io/en/stable/).
 * Implement a CI step using [GitHub Actions](https://docs.github.com/en/actions) to run Pylint each time a commit is pushed to a branch in a PR.
 
+# Resolution
+
+The goal of this practice is to build a system that logs the daily price of different stocks.
