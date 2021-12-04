@@ -90,9 +90,13 @@ This two variables are used in the SQL create queries presented in the `stocks_e
 
 The `PostgresqlClient` (dags/utils/postgresql_cli.py) python class was developed following the `SqLiteClient` of the practical Airflow coursework, in order to connect with the Postgres DB. The main difference of that class is in the db_uri (that use all the postgres necessary params) and the possibility to consider the schema name in the `insert_from_frame` method.
 
-In reference of the dag developed, consists in three main steps:
+In reference of the `stocks_etl_dag` developed, consists in three main steps:
 ![Image of the Deployment](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/documentation/resources/images/01_stocks_etl_dag.png)
-1. Getting the data from the stock api. Filter it (by execution day) and using xcom passing it to the another task. One important thing to take in count in this task, is that the response obtained from stock api is stored in raw folder. In prod enviroments is convinient (good practice) storing (for example in S3 bucket) the raw data, and then, in a stg/process task access it, process and then continues with the pipeline.
+1. Getting the daily data from the stock api. Filter it (by execution day) and using xcom passing it to the another task. One important thing to take into account in this task, is that the response obtained from stock api is stored in raw folder. In prod enviroments is convinient (good practice) storing (for example in S3 bucket) the raw data, and then, in subsecuent stg/process task access it, process it and then continues with the pipeline. This daily get task also has the folowing variables to configure (/dags/utils/config.py) the stock api request:
+* stocks_symbols_list = ["GOOG", "MSFT", "AMZN"]
+* stocks_api_base_url = 'https://www.alphavantage.co/query'
+* stocks_api_function = 'TIME_SERIES_DAILY'
+* stocks_api_key = 'pippo e pluto'
 
 ![Image of the Deployment](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/documentation/resources/images/04_raw_data_folder.png)
 
@@ -101,5 +105,7 @@ In reference of the dag developed, consists in three main steps:
 3. Getting the daily ticker data from postgresql database and generate the report using numpy. 
 
 ![Image of the Deployment](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/documentation/resources/images/05_reports_folder.png)
+![Image of the Deployment](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/documentation/resources/images/06_example_weekly_report.png)
 
-
+ToDo: comment best practices take in code:
+https://airflow.apache.org/docs/apache-airflow/stable/best-practices.html
