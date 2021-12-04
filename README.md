@@ -73,7 +73,7 @@ If you want to go an extra mile you can do the following:
 
 This section describes the considerations was take into account in order to resolve the requirements presented.
 
-📎 First, was used the same postgres service defined in the airflow yaml (to minimize the use of ram resources in local VM), also is possible (and **mandatory** in prod environments) to define another postgres service in the yaml and point it using the variables defined in the `/dags/utils/config.py` file:
+📎 First, was used the same postgres service defined in the airflow yaml (to minimize the use of ram resources in local VM), also is possible (and **mandatory** in prod environments) to define another postgres service in the yaml and point it using the variables defined in the [config.py](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/dags/utils/config.py) file:
 
 * stocks_conn_user = 'airflow'
 * stocks_conn_pass = 'airflow'
@@ -81,22 +81,22 @@ This section describes the considerations was take into account in order to reso
 * stocks_conn_port = '5432'
 * stocks_conn_db = 'airflow'
 
-📎 Related to the data model, in the same config.py file are another two variables used to parametrize the schema and table name. 
+📎 Related to the data model, in the same [config.py](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/dags/utils/config.py) file are another two variables used to parametrize the schema and table name. 
 
 * stocks_conn_schema = 'itba_stock_ticker'
 * stocks_conn_daily_ticker_table = 'stock_ticker_daily'
 
-This two variables are used in the SQL create queries presented in the `stocks_etl_dag.py` and are executed in the first dag task `create_schema_table_if_not_exists` with IF NOT EXISTS.  
+This two variables are used in the SQL create queries presented in the [stocks_etl_dag.py](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/dags/stocks_etl_dag.py) and are executed in the first task of the dag `create_schema_table_if_not_exists` with IF NOT EXISTS.  
 
-📎 The `PostgresqlClient` (dags/utils/postgresql_cli.py) python class was developed in order to connect with the Postgres DB following the `SqLiteClient` class of the practical Airflow coursework. The main difference of that class is in the db_uri (that use all the postgres necessary params) and the possibility to consider the schema name in the `insert_from_frame` method.
+📎 The [PostgresqlClient](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/dags/utils/postgresql_cli.py) python class was developed in order to connect with the Postgres DB following the `SqLiteClient` class of the practical Airflow coursework. The main difference of that class is in the db_uri (that use all the postgres necessary params) and the possibility to consider the schema name in the `insert_from_frame` method.
 
 
-👷‍♂️ ⚙️ Now, in reference of the `stocks_etl_dag` developed, consists in three main steps:
+👷‍♂️ ⚙️ Now, in reference of the [stocks_etl_dag.py](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/dags/stocks_etl_dag.py) developed, consists in three main steps:
 ![Image of the Deployment](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/documentation/resources/images/01_stocks_etl_dag.png)
 
 📌 Obtaining the daily data from the stock api, filtering (by execution day) and using xcom passing it to the another task.
 
-ℹ️ One important thing to take into account in this task, is that the response obtained from stock api is stored in a 📁 raw folder (before to process it). In prod environments is convenient (a good practice) storing (for example in a S3 bucket) the raw data, and then, in a subsequent stg/process task access it, process it and then continues with the pipeline. This daily get task also has the following variables to configure (/dags/utils/config.py) the stock api request:
+ℹ️ One important thing to take into account in this task, is that the response obtained from stock api is stored in a 📁 raw folder (before to process it). In prod environments is convenient (a good practice) storing (for example in a S3 bucket) the raw data, and then, in a subsequent stg/process task access it, process it and then continues with the pipeline. This daily get task also has the following variables to [configure](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/dags/utils/config.py) the stock api request:
 * stocks_symbols_list = ["GOOG", "MSFT", "AMZN"]
 * stocks_api_base_url = 'https://www.alphavantage.co/query'
 * stocks_api_function = 'TIME_SERIES_DAILY'
@@ -129,7 +129,25 @@ This two variables are used in the SQL create queries presented in the `stocks_e
 
 ![Image of the Deployment](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/documentation/resources/images/08_pytest_github_actions.png?raw=true)
 
-Tells about the SQL query
+📌 In reference for applying good practices this development implement some of explain in this official [official doc](https://airflow.apache.org/docs/apache-airflow/stable/best-practices.html) 
 
-ToDo: comment best practices take in code:
-https://airflow.apache.org/docs/apache-airflow/stable/best-practices.html
+✅ Top level python code --> imports are within functions (callables)
+
+✅ Dynamic DAGs with environment variables --> generating python code with embedded meta-data  --> [config.py](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/dags/utils/config.py) 
+
+
+
+## How to deploy & test
+
+
+
+## Improve ToDo
+
+⚪ Instead of working with xcoms is better to implement read the data from a raw folder in the task related to insert the data in postgres.
+
+⚪ Define a new postgres service in the yaml to host the stock data model.
+
+⚪ Implement SQLAlchemy's declarative base to the data model instead of pure sql queries. 
+
+⚪ Implement Pylint & black with Github Actions
+
