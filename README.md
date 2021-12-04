@@ -71,4 +71,13 @@ If you want to go an extra mile you can do the following:
 
 # Resolution
 
-The goal of this practice is to build a system that logs the daily price of different stocks.
+This section describe the considerations was take into account in order to resolve the requirements presented.
+
+First, was used the same postgres service defined in the airflow yaml (In order to minimise the use of ram resources), also is possible to add another postgres service in the yaml and point it using the variables defined in the /dags/utils/config.py file:
+
+stocks_conn_user = 'airflow'
+stocks_conn_pass = 'airflow'
+stocks_conn_host = 'postgres'
+stocks_conn_port = '5432'
+stocks_conn_db = 'airflow'
+
