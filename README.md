@@ -113,5 +113,14 @@ This two variables are used in the SQL create queries presented in the `stocks_e
 ![Image of the Deployment](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/documentation/resources/images/05_reports_folder.png)
 ![Image of the Deployment](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/documentation/resources/images/06_example_weekly_report.png)
 
+
+📎 Another things to consider:
+
+📌 The dag works with a dynamic backfill of 21 days ('start_date': days_ago(21)), only is executed the workdays (schedule_interval='0 08 * * 1-5'), and to handle the api limits has the max_active_runs set to 1 and the task "get_daily_stock_data_json" has the retries set to 3 to handle possible api problems.
+
+Tells about YAML
+
+Tells about Test
+
 ToDo: comment best practices take in code:
 https://airflow.apache.org/docs/apache-airflow/stable/best-practices.html
