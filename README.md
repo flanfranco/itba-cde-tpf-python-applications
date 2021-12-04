@@ -73,11 +73,21 @@ If you want to go an extra mile you can do the following:
 
 This section describe the considerations was take into account in order to resolve the requirements presented.
 
-First, was used the same postgres service defined in the airflow yaml (In order to minimise the use of ram resources), also is possible to add another postgres service in the yaml and point it using the variables defined in the /dags/utils/config.py file:
+First, was used the same postgres service defined in the airflow yaml (to minimise the use of ram resources in VM), also is possible (and **mandatory** in prod enviroments) to define another postgres service in the yaml and point it using the variables defined in the `/dags/utils/config.py` file:
 
-stocks_conn_user = 'airflow'
-stocks_conn_pass = 'airflow'
-stocks_conn_host = 'postgres'
-stocks_conn_port = '5432'
-stocks_conn_db = 'airflow'
+* stocks_conn_user = 'airflow'
+* stocks_conn_pass = 'airflow'
+* stocks_conn_host = 'postgres'
+* stocks_conn_port = '5432'
+* stocks_conn_db = 'airflow'
+
+Related to the data model, in the same config.py file are another two variables used to parametrize the schema and table name. 
+
+* stocks_conn_schema = 'itba_stock_ticker'
+* stocks_conn_daily_ticker_table = 'stock_ticker_daily'
+
+This two variables are used in the SQL create queries presented inside de `stocks_etl_dag.py` and are executed in the first dag task `create_schema_table_if_not_exists` with the IF NOT EXIST clause.  
+
+The `PostgresqlClient` (dags/utils/postgresql_cli.py) python class was developed following the `SqLiteClient` of the practical Airflow coursework, in order to connect with the Postgres DB. The main difference of that class is in the db_uri (that use all the postgres necessary params) and the possibility to consider the schema name in the `insert_from_frame` method.
+
 
