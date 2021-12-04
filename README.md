@@ -118,9 +118,15 @@ This two variables are used in the SQL create queries presented in the `stocks_e
 
 📌 The dag works with a dynamic backfill of 21 days ('start_date': days_ago(21)), only is executed the workdays (schedule_interval='0 08 * * 1-5'), and to handle the api limits has the max_active_runs set to 1 and the task "get_daily_stock_data_json" has the retries set to 3 to handle possible api problems.
 
-Tells about YAML
+![Image of the Deployment](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/documentation/resources/images/02_stocks_etl_dag_runs.png)
+
+
+📌 In the yaml, in the section of volumes for the service "x-airflow-common" was added the exposition of the daily_stock_data and daily_stock_report folders. Also was defined in the variable "_PIP_ADDITIONAL_REQUIREMENTS" to download and installs the plotly_express and kaleido packages to use in the reporting task of the dag.
+
 
 Tells about Test
+
+Tells about the SQL query
 
 ToDo: comment best practices take in code:
 https://airflow.apache.org/docs/apache-airflow/stable/best-practices.html
