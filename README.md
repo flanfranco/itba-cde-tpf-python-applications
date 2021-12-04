@@ -123,8 +123,7 @@ This two variables are used in the SQL create queries presented in the `stocks_e
 
 📌 In the yaml, in the section of volumes for the service "x-airflow-common" was added the exposition of the daily_stock_data and daily_stock_report folders. Also was defined in the variable "_PIP_ADDITIONAL_REQUIREMENTS" to download and installs the plotly_express and kaleido packages to use in the reporting task of the dag.
 
-
-Tells about Test
+📌 Related to test & validations,  function "test_get_daily_stock_data_json" was developed a in order to test the data types of the request of the stock api using calling the function of the dag. 
 
 Tells about the SQL query
 
