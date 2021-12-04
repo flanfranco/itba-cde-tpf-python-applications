@@ -92,7 +92,7 @@ The `PostgresqlClient` (dags/utils/postgresql_cli.py) python class was developed
 
 In reference of the `stocks_etl_dag` developed, consists in three main steps:
 ![Image of the Deployment](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/documentation/resources/images/01_stocks_etl_dag.png)
-1. Getting the daily data from the stock api. Filter it (by execution day) and using xcom passing it to the another task. One important thing to take into account in this task, is that the response obtained from stock api is stored in raw folder. In prod enviroments is convinient (good practice) storing (for example in S3 bucket) the raw data, and then, in subsecuent stg/process task access it, process it and then continues with the pipeline. This daily get task also has the folowing variables to configure (/dags/utils/config.py) the stock api request:
+1. Obtaining the daily data from the stock api. Filtering (by execution day) and using xcom passing it to the another task. One important thing to take into account in this task, is that the response obtained from stock api is stored in a raw folder. In prod enviroments is convinient (a good practice) storing (for example in a S3 bucket) the raw data, and then, in a subsecuent stg/process task access it, process it and then continues with the pipeline. This daily get task also has the folowing variables to configure (/dags/utils/config.py) the stock api request:
 * stocks_symbols_list = ["GOOG", "MSFT", "AMZN"]
 * stocks_api_base_url = 'https://www.alphavantage.co/query'
 * stocks_api_function = 'TIME_SERIES_DAILY'
@@ -100,7 +100,7 @@ In reference of the `stocks_etl_dag` developed, consists in three main steps:
 
 ![Image of the Deployment](https://github.com/flanfranco/itba-cde-tpf-python-applications/blob/main/documentation/resources/images/04_raw_data_folder.png)
 
-2. Inserts the filter stock data to postgresql database using PostgresqlClient.
+2. Storing the filter stock data to postgresql database using PostgresqlClient.
 
 3. Getting the daily ticker data from postgresql database and generate the report using numpy. 
 
